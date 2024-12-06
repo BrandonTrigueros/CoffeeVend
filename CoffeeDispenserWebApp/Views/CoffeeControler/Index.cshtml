@@ -1,0 +1,132 @@
+﻿@model List<CoffeeDispenserWebApp.Models.ICoffeeModel>
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Coffee List</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <style>
+        .coffee-card img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+    </style>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script>
+        var currentOrder = {};
+        var coffeePrices = {};
+
+        function addToOrder(coffeeName, maxStock, price) {
+            var quantity = parseInt(document.getElementById('quantity-' + coffeeName).value);
+            if (quantity > 0 && quantity <= maxStock) {
+                currentOrder[coffeeName] = quantity; // Actualiza la cantidad seleccionada
+                coffeePrices[coffeeName] = price;
+                updateOrderList();
+            } else {
+                alert('Please enter a valid quantity.');
+            }
+        }
+
+        function updateOrderList() {
+            var orderList = document.getElementById('order-list');
+            orderList.innerHTML = '';
+            var total = 0;
+            var table = document.createElement('table');
+            table.className = 'table table-striped';
+            var thead = document.createElement('thead');
+            thead.innerHTML = `
+                            <tr>
+                                <th scope="col">Coffee</th>
+                                <th scope="col">Quantity</th>
+                                <th scope="col">Price</th>
+                                <th scope="col">Subtotal</th>
+                            </tr>
+                        `;
+            table.appendChild(thead);
+            var tbody = document.createElement('tbody');
+
+            for (var coffeeName in currentOrder) {
+                var quantity = currentOrder[coffeeName];
+                var price = coffeePrices[coffeeName];
+                var subtotal = quantity * price;
+                total += subtotal;
+
+                var row = document.createElement('tr');
+                row.innerHTML = `
+                                <td>${coffeeName}</td>
+                                <td>${quantity}</td>
+                                <td>${price}</td>
+                                <td>${subtotal}</td>
+                            `;
+                tbody.appendChild(row);
+            }
+
+            var totalRow = document.createElement('tr');
+            totalRow.innerHTML = `
+                            <td colspan="3"><strong>Total</strong></td>
+                            <td><strong>${total}</strong></td>
+                        `;
+            tbody.appendChild(totalRow);
+            table.appendChild(tbody);
+            orderList.appendChild(table);
+        }
+
+        function confirmOrder() {
+            $.ajax({
+                type: 'POST',
+                url: '@Url.Action("ConfirmOrder", "CoffeeControler")',
+                data: JSON.stringify(currentOrder),
+                contentType: 'application/json; charset=utf-8',
+                dataType: 'json',
+                success: function (response) {
+                    alert('Order confirmed!');
+                    location.reload();
+                },
+                error: function (error) {
+                    alert('Error confirming order.');
+                }
+            });
+        }
+    </script>
+
+</head>
+<body>
+    <div class="container mt-4">
+        <div class="row">
+            <div class="col-md-8">
+                <h1 class="mb-4">Coffee List</h1>
+                <div class="row">
+                    @foreach (var coffee in Model)
+
+                    {
+                        <div class="col-md-6 mb-4">
+                            <div class="card coffee-card">
+                                <img src="@coffee.ImageUrl" class="card-img-top" alt="@coffee.Name" />
+                                <div class="card-body">
+                                    <h5 class="card-title">@coffee.Name</h5>
+                                    <p class="card-text">Stock: @coffee.Stock</p>
+                                    <p class="card-text">Price: @coffee.Price</p>
+                                    <div class="form-group">
+                                        <label for="quantity-@coffee.Name">Quantity</label>
+                                        <input type="number" class="form-control" id="quantity-@coffee.Name" min="0" max="@coffee.Stock" value="0" />
+                                    </div>
+                                    <button type="button" class="btn btn-primary mt-2" onclick="addToOrder('@coffee.Name', @coffee.Stock, @coffee.Price)">Add to Order</button>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+            <div class="col-md-4">
+                <h2>Current Order</h2>
+                <div id="order-list"></div>
+                <button type="button" class="btn btn-success mt-4" onclick="confirmOrder()">Confirm Order</button>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
