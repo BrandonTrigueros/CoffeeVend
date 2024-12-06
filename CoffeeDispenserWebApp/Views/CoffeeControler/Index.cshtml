@@ -15,88 +15,11 @@
             object-fit: cover;
         }
     </style>
-    <script src="~/lib/jquery/dist/jquery.min.js"></script>
-    <script>
-        var currentOrder = {};
-        var coffeePrices = {};
-
-        function addToOrder(coffeeName, maxStock, price) {
-            var quantity = parseInt(document.getElementById('quantity-' + coffeeName).value);
-            if (quantity > 0 && quantity <= maxStock) {
-                currentOrder[coffeeName] = quantity; // Actualiza la cantidad seleccionada
-                coffeePrices[coffeeName] = price;
-                updateOrderList();
-            } else {
-                alert('Please enter a valid quantity.');
-            }
-        }
-
-        function updateOrderList() {
-            var orderList = document.getElementById('order-list');
-            orderList.innerHTML = '';
-            var total = 0;
-            var table = document.createElement('table');
-            table.className = 'table table-striped';
-            var thead = document.createElement('thead');
-            thead.innerHTML = `
-                            <tr>
-                                <th scope="col">Coffee</th>
-                                <th scope="col">Quantity</th>
-                                <th scope="col">Price</th>
-                                <th scope="col">Subtotal</th>
-                            </tr>
-                        `;
-            table.appendChild(thead);
-            var tbody = document.createElement('tbody');
-
-            for (var coffeeName in currentOrder) {
-                var quantity = currentOrder[coffeeName];
-                var price = coffeePrices[coffeeName];
-                var subtotal = quantity * price;
-                total += subtotal;
-
-                var row = document.createElement('tr');
-                row.innerHTML = `
-                                <td>${coffeeName}</td>
-                                <td>${quantity}</td>
-                                <td>${price}</td>
-                                <td>${subtotal}</td>
-                            `;
-                tbody.appendChild(row);
-            }
-
-            var totalRow = document.createElement('tr');
-            totalRow.innerHTML = `
-                            <td colspan="3"><strong>Total</strong></td>
-                            <td><strong>${total}</strong></td>
-                        `;
-            tbody.appendChild(totalRow);
-            table.appendChild(tbody);
-            orderList.appendChild(table);
-        }
-
-        function confirmOrder() {
-            $.ajax({
-                type: 'POST',
-                url: '@Url.Action("ConfirmOrder", "CoffeeControler")',
-                data: JSON.stringify(currentOrder),
-                contentType: 'application/json; charset=utf-8',
-                dataType: 'json',
-                success: function (response) {
-                    alert('Order confirmed!');
-                    location.reload();
-                },
-                error: function (error) {
-                    alert('Error confirming order.');
-                }
-            });
-        }
-    </script>
-
 </head>
 <body>
     <div class="container mt-4">
         <div class="row">
+            <!-- Coffee Selection Section -->
             <div class="col-md-8">
                 <h1 class="mb-4">Coffee List</h1>
                 <div class="row">
@@ -121,12 +44,308 @@
                     }
                 </div>
             </div>
+
+            <!-- Current Order and Payment Section -->
             <div class="col-md-4">
                 <h2>Current Order</h2>
                 <div id="order-list"></div>
-                <button type="button" class="btn btn-success mt-4" onclick="confirmOrder()">Confirm Order</button>
+                <!-- For Bootstrap 5, use data-bs-toggle and data-bs-target -->
+                <button type="button" class="btn btn-secondary mt-4" data-bs-toggle="modal" data-bs-target="#paymentModal">Add Payment</button>
+                <!-- If using Bootstrap 4, use the following instead:
+                <button type="button" class="btn btn-secondary mt-4" data-toggle="modal" data-target="#paymentModal">Add Payment</button>
+                -->
             </div>
         </div>
     </div>
+
+    <!-- Payment Modal -->
+    <div class="modal fade" id="paymentModal" tabindex="-1" role="dialog" aria-labelledby="paymentModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="paymentModalLabel">Insert Coins</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <!-- For Bootstrap 4, use:
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    -->
+                </div>
+                <div class="modal-body">
+                    <p>Total to Pay: <strong id="totalToPay">0</strong></p>
+                    <div class="form-group">
+                        <label>Insert Coins:</label>
+                        <div class="d-flex justify-content-between mb-2">
+                            <span>1000</span>
+                            <input type="number" class="form-control coin-input" data-value="1000" min="0" value="0" style="width: 70px;" />
+                        </div>
+                        <div class="d-flex justify-content-between mb-2">
+                            <span>500</span>
+                            <input type="number" class="form-control coin-input" data-value="500" min="0" value="0" style="width: 70px;" />
+                        </div>
+                        <div class="d-flex justify-content-between mb-2">
+                            <span>100</span>
+                            <input type="number" class="form-control coin-input" data-value="100" min="0" value="0" style="width: 70px;" />
+                        </div>
+                        <div class="d-flex justify-content-between mb-2">
+                            <span>50</span>
+                            <input type="number" class="form-control coin-input" data-value="50" min="0" value="0" style="width: 70px;" />
+                        </div>
+                        <div class="d-flex justify-content-between mb-2">
+                            <span>25</span>
+                            <input type="number" class="form-control coin-input" data-value="25" min="0" value="0" style="width: 70px;" />
+                        </div>
+                    </div>
+                    <p>Current Payment: <strong id="currentPayment">0</strong></p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-success" onclick="processOrder()">Confirm Payment</button>
+                    <!-- For Bootstrap 5, use data-bs-dismiss -->
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <!-- If using Bootstrap 4, use data-dismiss -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Success Modal -->
+    <div class="modal fade" id="successModal" tabindex="-1" role="dialog" aria-labelledby="successModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="successModalLabel">Order Successful</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" onclick="reloadPage()"></button>
+                    <!-- For Bootstrap 4, use:
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close" onclick="reloadPage()">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    -->
+                </div>
+                <div class="modal-body">
+                    <p>Your order has been confirmed!</p>
+                    <p>Change:</p>
+                    <ul id="changeList"></ul>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal" onclick="reloadPage()">Close</button>
+                    <!-- For Bootstrap 4, use data-dismiss -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Error Modal -->
+    <div class="modal fade" id="errorModal" tabindex="-1" role="dialog" aria-labelledby="errorModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="errorModalLabel">Order Failed</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <!-- For Bootstrap 4, use:
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    -->
+                </div>
+                <div class="modal-body">
+                    <p id="errorMessage">There was an error processing your order.</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+                    <!-- For Bootstrap 4, use data-dismiss -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <!-- Include scripts only once, at the end of the body -->
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+        var currentOrder = {};
+        var coffeePrices = {};
+
+        // Add Coffee to Order
+        function addToOrder(coffeeName, maxStock, price) {
+            console.log('addToOrder called for:', coffeeName);
+            var quantity = parseInt(document.getElementById('quantity-' + coffeeName).value);
+            if (quantity > 0 && quantity <= maxStock) {
+                currentOrder[coffeeName] = quantity;
+                coffeePrices[coffeeName] = price;
+                updateOrderList();
+                updateTotalToPay();
+            } else {
+                alert('Please enter a valid quantity.');
+            }
+        }
+
+        // Update Order List Display
+        function updateOrderList() {
+            var orderList = document.getElementById('order-list');
+            orderList.innerHTML = '';
+            var total = 0;
+            var table = document.createElement('table');
+            table.className = 'table table-striped';
+            var thead = document.createElement('thead');
+            thead.innerHTML = `
+                        <tr>
+                            <th scope="col">Coffee</th>
+                            <th scope="col">Quantity</th>
+                            <th scope="col">Price</th>
+                            <th scope="col">Subtotal</th>
+                        </tr>
+                    `;
+            table.appendChild(thead);
+            var tbody = document.createElement('tbody');
+
+            for (var coffeeName in currentOrder) {
+                var quantity = currentOrder[coffeeName];
+                var price = coffeePrices[coffeeName];
+                var subtotal = quantity * price;
+                total += subtotal;
+
+                var row = document.createElement('tr');
+                row.innerHTML = `
+                            <td>${coffeeName}</td>
+                            <td>${quantity}</td>
+                            <td>${price}</td>
+                            <td>${subtotal}</td>
+                        `;
+                tbody.appendChild(row);
+            }
+
+            var totalRow = document.createElement('tr');
+            totalRow.innerHTML = `
+                        <td colspan="3"><strong>Total</strong></td>
+                        <td><strong>${total}</strong></td>
+                    `;
+            tbody.appendChild(totalRow);
+            table.appendChild(tbody);
+            orderList.appendChild(table);
+
+            document.getElementById('totalToPay').innerText = total;
+        }
+
+        // Update Total to Pay Display
+        function updateTotalToPay() {
+            var total = Object.keys(currentOrder).reduce((sum, coffeeName) => sum + (currentOrder[coffeeName] * coffeePrices[coffeeName]), 0);
+            document.getElementById('totalToPay').innerText = total;
+        }
+
+        // Process Order and Payment
+        function processOrder() {
+            console.log('processOrder called');
+            // Collect inserted coins
+            var insertedCoins = [];
+            $('.coin-input').each(function () {
+                var amount = parseInt($(this).val());
+                var value = parseInt($(this).data('value'));
+                if (amount > 0) {
+                    insertedCoins.push({ Value: value, Amount: amount });
+                }
+            });
+
+            // Calculate total inserted
+            var totalInserted = insertedCoins.reduce((sum, coin) => sum + (coin.Value * coin.Amount), 0);
+            var totalToPay = parseInt(document.getElementById('totalToPay').innerText);
+
+            console.log('Total Inserted:', totalInserted);
+            console.log('Total to Pay:', totalToPay);
+
+            if (totalToPay === 0) {
+                alert('Please add at least one coffee to your order.');
+                return;
+            }
+
+            if (totalInserted < totalToPay) {
+                alert('Insufficient payment. Please insert more coins.');
+                return;
+            }
+
+            var orderData = {
+                SelectedCoffees: currentOrder,
+                InsertedCoins: insertedCoins
+            };
+
+            console.log('Order Data:', orderData);
+
+            $.ajax({
+                type: 'POST',
+                url: '@Url.Action("ConfirmOrder", "CoffeeControler")',
+                data: JSON.stringify(orderData),
+                contentType: 'application/json; charset=utf-8',
+                dataType: 'json',
+                success: function (response) {
+                    console.log('AJAX Success:', response);
+                    if (response.success) {
+                        // Populate Change List
+                        var changeList = $('#changeList');
+                        changeList.empty();
+                        if (response.change.coinsCount.length > 0) {
+                            response.change.coinsCount.forEach(function (coin) {
+                                changeList.append('<li>' + coin.value + ' x ' + coin.amount + '</li>');
+                            });
+                        } else {
+                            changeList.append('<li>No change needed.</li>');
+                        }
+
+                        // Show Success Modal
+                        var paymentModalEl = document.getElementById('paymentModal');
+                        var paymentModal = bootstrap.Modal.getInstance(paymentModalEl);
+                        if (paymentModal) {
+                            paymentModal.hide();
+                        }
+
+                        var successModal = new bootstrap.Modal(document.getElementById('successModal'));
+                        successModal.show();
+                    } else {
+                        // Show Error Modal with Message
+                        var paymentModalEl = document.getElementById('paymentModal');
+                        var paymentModal = bootstrap.Modal.getInstance(paymentModalEl);
+                        if (paymentModal) {
+                            paymentModal.hide();
+                        }
+
+                        $('#errorMessage').text(response.message);
+                        var errorModal = new bootstrap.Modal(document.getElementById('errorModal'));
+                        errorModal.show();
+                    }
+                },
+                error: function (jqXHR, textStatus, errorThrown) {
+                    console.error('AJAX Error:', textStatus, errorThrown);
+                    // Show Generic Error Modal
+                    var paymentModalEl = document.getElementById('paymentModal');
+                    var paymentModal = bootstrap.Modal.getInstance(paymentModalEl);
+                    if (paymentModal) {
+                        paymentModal.hide();
+                    }
+
+                    $('#errorMessage').text('An unexpected error occurred while processing your order.');
+                    var errorModal = new bootstrap.Modal(document.getElementById('errorModal'));
+                    errorModal.show();
+                }
+            });
+        }
+
+        // Reload Page after Successful Order
+        function reloadPage() {
+            location.reload();
+        }
+
+        // Update Current Payment in Real-Time
+        $(document).ready(function () {
+            $('.coin-input').on('input', function () {
+                var currentPayment = 0;
+                $('.coin-input').each(function () {
+                    var amount = parseInt($(this).val()) || 0;
+                    var value = parseInt($(this).data('value'));
+                    currentPayment += (value * amount);
+                });
+                $('#currentPayment').text(currentPayment);
+            });
+        });
+    </script>
 </body>
 </html>

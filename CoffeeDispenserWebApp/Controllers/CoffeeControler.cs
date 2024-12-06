@@ -47,10 +47,27 @@ namespace CoffeeDispenserWebApp.Controllers
         }
 
         [HttpPost]
-        public IActionResult ConfirmOrder([FromBody] Dictionary<string, int> selectedCoffees)
+        public IActionResult ConfirmOrder([FromBody] CompleteOrderModel order)
         {
-            _coffeeRepository.SelectCoffees(selectedCoffees);
-            return Json(new { success = true });
+            try
+            {
+                _coffeeRepository.SelectCoffees(order.SelectedCoffees);
+                _coinRepository.AddCoins(order.InsertedCoins);
+                int totalToPay = 0;
+                foreach (var coffee in order.SelectedCoffees)
+                {
+                    var coffeeModel = _coffeeRepository.GetCoffeeByName(coffee.Key);
+                    if (coffeeModel == null)
+                        throw new Exception($"Coffee '{coffee.Key}' not found.");
+                    totalToPay += coffeeModel.Price * coffee.Value;
+                }
+                ChangeModel change = _changeCalculator.CalculateChange(order.InsertedCoins, totalToPay);
+                return Json(new { success = true, change = change });
+            }
+            catch (Exception ex)
+            {
+                return Json(new { success = false, message = ex.Message });
+            }
         }
 
         public IActionResult CoinList()
