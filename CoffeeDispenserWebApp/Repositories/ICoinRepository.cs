@@ -6,7 +6,7 @@ namespace CoffeeDispenserWebApp.Repositories
     {
         public void CreateCoin(CoinModel model);
         public List<CoinModel> GetCoins();
-        void AddCoins(Dictionary<int, int> selectedCoins);
-        void SubstractCoins(Dictionary<int, int> selectedCoins);
+        void AddCoins(List<CoinModel> selectedCoins);
+        void SubstractCoins(List<CoinModel> selectedCoins);
     }
 }

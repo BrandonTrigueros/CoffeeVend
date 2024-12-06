@@ -1,3 +1,4 @@
+using CoffeeDispenserWebApp.Controllers;
 using CoffeeDispenserWebApp.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -6,6 +7,8 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllersWithViews();
 
 builder.Services.AddSingleton<ICoffeeRepository, CoffeeRepository>();
+builder.Services.AddSingleton<ICoinRepository, CoinRepository>();
+builder.Services.AddTransient<ChangeCalculator>();
 
 var app = builder.Build();
 
@@ -27,5 +30,10 @@ app.UseAuthorization();
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=CoffeeControler}/{action=Index}/{id?}");
+
+app.MapControllerRoute(
+    name: "coinList",
+    pattern: "coins",
+    defaults: new { controller = "CoffeeControler", action = "CoinList" });
 
 app.Run();

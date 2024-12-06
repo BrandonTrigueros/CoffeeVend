@@ -1,0 +1,35 @@
+﻿@model List<CoffeeDispenserWebApp.Models.CoinModel>
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Coin List</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+</head>
+<body>
+    <div class="container mt-4">
+        <h1 class="mb-4">Coin List</h1>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th scope="col">Value</th>
+                    <th scope="col">Amount</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var coin in Model)
+
+                {
+                    <tr>
+                        <td>@coin.Value</td>
+                        <td>@coin.Amount</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>
