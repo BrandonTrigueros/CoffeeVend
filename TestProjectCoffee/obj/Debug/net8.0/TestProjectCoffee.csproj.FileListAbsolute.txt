@@ -98,3 +98,14 @@ C:\Users\brand\OneDrive\Desktop\CoffeeDispenserWebApp\TestProjectCoffee\obj\Debu
 C:\Users\brand\OneDrive\Desktop\CoffeeDispenserWebApp\TestProjectCoffee\obj\Debug\net8.0\TestProjectCoffee.pdb
 C:\Users\brand\OneDrive\Desktop\CoffeeDispenserWebApp\TestProjectCoffee\obj\Debug\net8.0\TestProjectCoffee.genruntimeconfig.cache
 C:\Users\brand\OneDrive\Desktop\CoffeeDispenserWebApp\TestProjectCoffee\obj\Debug\net8.0\ref\TestProjectCoffee.dll
+C:\Users\brand\OneDrive\Desktop\CoffeeDispenserWebApp\TestProjectCoffee\bin\Debug\net8.0\CoverletSourceRootsMapping_TestProjectCoffee
+C:\Users\brand\OneDrive\Desktop\CoffeeDispenserWebApp\TestProjectCoffee\bin\Debug\net8.0\CoffeeDispenserWebApp.deps.json
+C:\Users\brand\OneDrive\Desktop\CoffeeDispenserWebApp\TestProjectCoffee\bin\Debug\net8.0\CoffeeDispenserWebApp.runtimeconfig.json
+C:\Users\brand\OneDrive\Desktop\CoffeeDispenserWebApp\TestProjectCoffee\bin\Debug\net8.0\appsettings.Development.json
+C:\Users\brand\OneDrive\Desktop\CoffeeDispenserWebApp\TestProjectCoffee\bin\Debug\net8.0\appsettings.json
+C:\Users\brand\OneDrive\Desktop\CoffeeDispenserWebApp\TestProjectCoffee\bin\Debug\net8.0\CoffeeDispenserWebApp.staticwebassets.runtime.json
+C:\Users\brand\OneDrive\Desktop\CoffeeDispenserWebApp\TestProjectCoffee\bin\Debug\net8.0\CoffeeDispenserWebApp.exe
+C:\Users\brand\OneDrive\Desktop\CoffeeDispenserWebApp\TestProjectCoffee\bin\Debug\net8.0\Castle.Core.dll
+C:\Users\brand\OneDrive\Desktop\CoffeeDispenserWebApp\TestProjectCoffee\bin\Debug\net8.0\Moq.dll
+C:\Users\brand\OneDrive\Desktop\CoffeeDispenserWebApp\TestProjectCoffee\bin\Debug\net8.0\CoffeeDispenserWebApp.dll
+C:\Users\brand\OneDrive\Desktop\CoffeeDispenserWebApp\TestProjectCoffee\bin\Debug\net8.0\CoffeeDispenserWebApp.pdb
