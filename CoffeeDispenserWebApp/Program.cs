@@ -29,11 +29,11 @@ app.UseAuthorization();
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=CoffeeControler}/{action=Index}/{id?}");
+    pattern: "{controller=Coffee}/{action=Index}/{id?}");
 
 app.MapControllerRoute(
     name: "coinList",
     pattern: "coins",
-    defaults: new { controller = "CoffeeControler", action = "CoinList" });
+    defaults: new { controller = "Coffee", action = "CoinList" });
 
 app.Run();

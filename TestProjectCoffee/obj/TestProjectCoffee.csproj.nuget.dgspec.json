@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\brand\\OneDrive\\Desktop\\CoffeeDispenserWebApp\\TestProjectCoffee\\TestProjectCoffee.csproj": {}
+    "C:\\Users\\brand\\OneDrive\\Desktop\\CoffeeVend\\TestProjectCoffee\\TestProjectCoffee.csproj": {}
   },
   "projects": {
-    "C:\\Users\\brand\\OneDrive\\Desktop\\CoffeeDispenserWebApp\\CoffeeDispenserWebApp\\CoffeeDispenserWebApp.csproj": {
+    "C:\\Users\\brand\\OneDrive\\Desktop\\CoffeeVend\\CoffeeDispenserWebApp\\CoffeeDispenserWebApp.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\brand\\OneDrive\\Desktop\\CoffeeDispenserWebApp\\CoffeeDispenserWebApp\\CoffeeDispenserWebApp.csproj",
+        "projectUniqueName": "C:\\Users\\brand\\OneDrive\\Desktop\\CoffeeVend\\CoffeeDispenserWebApp\\CoffeeDispenserWebApp.csproj",
         "projectName": "CoffeeDispenserWebApp",
-        "projectPath": "C:\\Users\\brand\\OneDrive\\Desktop\\CoffeeDispenserWebApp\\CoffeeDispenserWebApp\\CoffeeDispenserWebApp.csproj",
+        "projectPath": "C:\\Users\\brand\\OneDrive\\Desktop\\CoffeeVend\\CoffeeDispenserWebApp\\CoffeeDispenserWebApp.csproj",
         "packagesPath": "C:\\Users\\brand\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\brand\\OneDrive\\Desktop\\CoffeeDispenserWebApp\\CoffeeDispenserWebApp\\obj\\",
+        "outputPath": "C:\\Users\\brand\\OneDrive\\Desktop\\CoffeeVend\\CoffeeDispenserWebApp\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\brand\\AppData\\Roaming\\NuGet\\NuGet.Config",
@@ -74,14 +74,14 @@
         }
       }
     },
-    "C:\\Users\\brand\\OneDrive\\Desktop\\CoffeeDispenserWebApp\\TestProjectCoffee\\TestProjectCoffee.csproj": {
+    "C:\\Users\\brand\\OneDrive\\Desktop\\CoffeeVend\\TestProjectCoffee\\TestProjectCoffee.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\brand\\OneDrive\\Desktop\\CoffeeDispenserWebApp\\TestProjectCoffee\\TestProjectCoffee.csproj",
+        "projectUniqueName": "C:\\Users\\brand\\OneDrive\\Desktop\\CoffeeVend\\TestProjectCoffee\\TestProjectCoffee.csproj",
         "projectName": "TestProjectCoffee",
-        "projectPath": "C:\\Users\\brand\\OneDrive\\Desktop\\CoffeeDispenserWebApp\\TestProjectCoffee\\TestProjectCoffee.csproj",
+        "projectPath": "C:\\Users\\brand\\OneDrive\\Desktop\\CoffeeVend\\TestProjectCoffee\\TestProjectCoffee.csproj",
         "packagesPath": "C:\\Users\\brand\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\brand\\OneDrive\\Desktop\\CoffeeDispenserWebApp\\TestProjectCoffee\\obj\\",
+        "outputPath": "C:\\Users\\brand\\OneDrive\\Desktop\\CoffeeVend\\TestProjectCoffee\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\brand\\AppData\\Roaming\\NuGet\\NuGet.Config",
@@ -99,8 +99,8 @@
           "net8.0": {
             "targetAlias": "net8.0",
             "projectReferences": {
-              "C:\\Users\\brand\\OneDrive\\Desktop\\CoffeeDispenserWebApp\\CoffeeDispenserWebApp\\CoffeeDispenserWebApp.csproj": {
-                "projectPath": "C:\\Users\\brand\\OneDrive\\Desktop\\CoffeeDispenserWebApp\\CoffeeDispenserWebApp\\CoffeeDispenserWebApp.csproj"
+              "C:\\Users\\brand\\OneDrive\\Desktop\\CoffeeVend\\CoffeeDispenserWebApp\\CoffeeDispenserWebApp.csproj": {
+                "projectPath": "C:\\Users\\brand\\OneDrive\\Desktop\\CoffeeVend\\CoffeeDispenserWebApp\\CoffeeDispenserWebApp.csproj"
               }
             }
           }

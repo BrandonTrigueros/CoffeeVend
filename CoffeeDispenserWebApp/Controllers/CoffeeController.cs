@@ -5,13 +5,13 @@ using System.Collections.Generic;
 
 namespace CoffeeDispenserWebApp.Controllers
 {
-    public class CoffeeControler : Controller
+    public class CoffeeController : Controller
     {
         private readonly ICoffeeRepository _coffeeRepository;
         private readonly ICoinRepository _coinRepository;
         private readonly ChangeCalculator _changeCalculator;
 
-        public CoffeeControler(ICoffeeRepository coffeeRepository, ICoinRepository coinRepository, ChangeCalculator changeCalculator)
+        public CoffeeController(ICoffeeRepository coffeeRepository, ICoinRepository coinRepository, ChangeCalculator changeCalculator)
         {
             _coffeeRepository = coffeeRepository;
             _coinRepository = coinRepository;
