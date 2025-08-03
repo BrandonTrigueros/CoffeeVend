@@ -21,9 +21,12 @@ namespace CoffeeDispenserWebApp.Repositories
             return CoffeeInventory;
         }
 
-        public ICoffeeModel GetCoffeeByName(string name)
+        public ICoffeeModel? GetCoffeeByName(string name)
         {
-            return CoffeeInventory.Find(coffee => coffee.Name == name);
+            if (string.IsNullOrWhiteSpace(name))
+                return null;
+                
+            return CoffeeInventory.Find(coffee => coffee.Name.Equals(name, StringComparison.OrdinalIgnoreCase));
         }
 
         public void SelectCoffees(Dictionary<string, int> selectedCoffees)

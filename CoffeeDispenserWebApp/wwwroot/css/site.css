@@ -1,5 +1,30 @@
+/* ===============================
+   COFFEE DISPENSER - MICROSOFT-LEVEL DESIGN
+   =============================== */
+
+/* Root Variables for Consistent Theming */
+:root {
+  --primary-color: #2B1D16;
+  --secondary-color: #8B4513;
+  --accent-color: #D2691E;
+  --gold-color: #DAA520;
+  --success-color: #28a745;
+  --danger-color: #dc3545;
+  --light-bg: #F8F4E6;
+  --dark-text: #2B1D16;
+  --white: #FFFFFF;
+  --shadow-light: 0 2px 10px rgba(43, 29, 22, 0.1);
+  --shadow-medium: 0 4px 20px rgba(43, 29, 22, 0.15);
+  --shadow-heavy: 0 8px 30px rgba(43, 29, 22, 0.2);
+  --transition-fast: 0.2s ease-in-out;
+  --transition-medium: 0.4s ease-in-out;
+  --transition-slow: 0.6s ease-in-out;
+}
+
+/* Base Typography */
 html {
   font-size: 14px;
+  scroll-behavior: smooth;
 }
 
 @media (min-width: 768px) {
@@ -8,15 +33,473 @@ html {
   }
 }
 
-.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
-  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
-}
-
-html {
-  position: relative;
-  min-height: 100%;
-}
-
 body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: linear-gradient(135deg, var(--light-bg) 0%, #FFF8DC 100%);
+  color: var(--dark-text);
   margin-bottom: 60px;
+  line-height: 1.6;
+}
+
+/* Professional Focus States */
+.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
+  box-shadow: 0 0 0 0.2rem rgba(218, 165, 32, 0.25);
+  border-color: var(--gold-color);
+}
+
+/* ===============================
+   HERO BANNER SECTION
+   =============================== */
+
+.hero-banner {
+  background: linear-gradient(135deg, 
+    var(--primary-color) 0%, 
+    var(--secondary-color) 50%, 
+    var(--accent-color) 100%);
+  color: var(--white);
+  padding: 60px 0;
+  margin-bottom: 40px;
+  position: relative;
+  overflow: hidden;
+  box-shadow: var(--shadow-heavy);
+}
+
+.hero-banner::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="coffee-beans" patternUnits="userSpaceOnUse" width="20" height="20"><circle cx="10" cy="10" r="2" fill="rgba(255,255,255,0.05)"/></pattern></defs><rect width="100" height="100" fill="url(%23coffee-beans)"/></svg>');
+  animation: float 20s ease-in-out infinite;
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0px) rotate(0deg); }
+  50% { transform: translateY(-10px) rotate(2deg); }
+}
+
+.hero-content {
+  position: relative;
+  z-index: 2;
+  text-align: center;
+}
+
+.hero-title {
+  font-size: 3.5rem;
+  font-weight: 700;
+  margin-bottom: 20px;
+  text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+  animation: slideInDown var(--transition-slow);
+}
+
+.hero-subtitle {
+  font-size: 1.3rem;
+  margin-bottom: 30px;
+  opacity: 0.9;
+  animation: slideInUp var(--transition-slow);
+  animation-delay: 0.2s;
+  animation-fill-mode: both;
+}
+
+.hero-features {
+  display: flex;
+  justify-content: center;
+  gap: 40px;
+  margin-top: 40px;
+  flex-wrap: wrap;
+}
+
+.hero-feature {
+  text-align: center;
+  animation: fadeInUp var(--transition-medium);
+  animation-delay: 0.4s;
+  animation-fill-mode: both;
+}
+
+.hero-feature-icon {
+  font-size: 2.5rem;
+  margin-bottom: 10px;
+  color: var(--gold-color);
+}
+
+.hero-feature-text {
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+/* ===============================
+   COFFEE CARDS ENHANCEMENT
+   =============================== */
+
+.coffee-section {
+  padding: 40px 0;
+}
+
+.section-title {
+  text-align: center;
+  font-size: 2.5rem;
+  font-weight: 600;
+  color: var(--primary-color);
+  margin-bottom: 50px;
+  position: relative;
+}
+
+.section-title::after {
+  content: '';
+  position: absolute;
+  bottom: -10px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100px;
+  height: 3px;
+  background: linear-gradient(90deg, var(--gold-color), var(--accent-color));
+  border-radius: 2px;
+}
+
+.coffee-card {
+  transition: all var(--transition-medium);
+  border: none;
+  border-radius: 15px;
+  overflow: hidden;
+  box-shadow: var(--shadow-light);
+  background: var(--white);
+  margin-bottom: 30px;
+  animation: slideInUp var(--transition-medium);
+}
+
+.coffee-card:hover {
+  transform: translateY(-10px) scale(1.02);
+  box-shadow: var(--shadow-heavy);
+}
+
+.coffee-card .card-img-top {
+  height: 250px;
+  object-fit: cover;
+  transition: transform var(--transition-medium);
+}
+
+.coffee-card:hover .card-img-top {
+  transform: scale(1.1);
+}
+
+.coffee-card .card-body {
+  padding: 25px;
+  position: relative;
+}
+
+.coffee-card .card-title {
+  font-size: 1.4rem;
+  font-weight: 600;
+  color: var(--primary-color);
+  margin-bottom: 15px;
+}
+
+.coffee-card .price-badge {
+  position: absolute;
+  top: -40px;
+  right: 20px;
+  background: var(--gold-color);
+  color: var(--white);
+  padding: 8px 15px;
+  border-radius: 20px;
+  font-weight: 600;
+  font-size: 1.1rem;
+  box-shadow: var(--shadow-medium);
+}
+
+.coffee-card .stock-info {
+  color: var(--secondary-color);
+  font-size: 0.9rem;
+  margin-bottom: 15px;
+}
+
+.quantity-controls {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 20px 0;
+}
+
+.quantity-label {
+  font-weight: 500;
+  color: var(--primary-color);
+}
+
+.quantity-input {
+  width: 80px;
+  text-align: center;
+  border: 2px solid var(--accent-color);
+  border-radius: 8px;
+  padding: 8px;
+  transition: all var(--transition-fast);
+}
+
+.quantity-input:focus {
+  border-color: var(--gold-color);
+  box-shadow: 0 0 0 0.2rem rgba(218, 165, 32, 0.25);
+}
+
+.add-to-order-btn {
+  background: linear-gradient(135deg, var(--accent-color), var(--gold-color));
+  border: none;
+  color: var(--white);
+  padding: 12px 25px;
+  border-radius: 25px;
+  font-weight: 600;
+  transition: all var(--transition-fast);
+  box-shadow: var(--shadow-light);
+  width: 100%;
+}
+
+.add-to-order-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-medium);
+  background: linear-gradient(135deg, var(--gold-color), var(--accent-color));
+}
+
+/* ===============================
+   ORDER SUMMARY PANEL
+   =============================== */
+
+.order-panel {
+  background: var(--white);
+  border-radius: 15px;
+  padding: 30px;
+  box-shadow: var(--shadow-medium);
+  position: sticky;
+  top: 20px;
+  animation: slideInRight var(--transition-medium);
+}
+
+.order-panel h2 {
+  color: var(--primary-color);
+  font-weight: 600;
+  margin-bottom: 25px;
+  text-align: center;
+}
+
+.order-table {
+  margin-bottom: 25px;
+}
+
+.order-table th {
+  background: var(--light-bg);
+  color: var(--primary-color);
+  font-weight: 600;
+  border: none;
+  padding: 15px 10px;
+}
+
+.order-table td {
+  padding: 12px 10px;
+  border-color: rgba(43, 29, 22, 0.1);
+}
+
+.total-row {
+  background: linear-gradient(135deg, var(--accent-color), var(--gold-color));
+  color: var(--white);
+  font-weight: 600;
+}
+
+.payment-btn {
+  background: linear-gradient(135deg, var(--success-color), #20c997);
+  border: none;
+  color: var(--white);
+  padding: 15px 30px;
+  border-radius: 25px;
+  font-weight: 600;
+  font-size: 1.1rem;
+  width: 100%;
+  transition: all var(--transition-fast);
+  box-shadow: var(--shadow-light);
+}
+
+.payment-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-medium);
+}
+
+/* ===============================
+   MODAL ENHANCEMENTS
+   =============================== */
+
+.modal-content {
+  border: none;
+  border-radius: 15px;
+  overflow: hidden;
+  box-shadow: var(--shadow-heavy);
+}
+
+.modal-header {
+  background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+  color: var(--white);
+  border: none;
+  padding: 20px 25px;
+}
+
+.modal-title {
+  font-weight: 600;
+}
+
+.modal-body {
+  padding: 30px 25px;
+}
+
+.coin-input-group {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 15px;
+  padding: 10px 15px;
+  background: var(--light-bg);
+  border-radius: 8px;
+  transition: all var(--transition-fast);
+}
+
+.coin-input-group:hover {
+  background: #F0E68C;
+  transform: translateX(5px);
+}
+
+.coin-value {
+  font-weight: 600;
+  color: var(--primary-color);
+  font-size: 1.1rem;
+}
+
+.coin-input {
+  border: 2px solid var(--accent-color);
+  border-radius: 8px;
+  text-align: center;
+  font-weight: 500;
+  transition: all var(--transition-fast);
+}
+
+.payment-summary {
+  background: var(--light-bg);
+  padding: 20px;
+  border-radius: 10px;
+  margin: 20px 0;
+  text-align: center;
+}
+
+/* ===============================
+   ANIMATIONS
+   =============================== */
+
+@keyframes slideInDown {
+  from {
+    opacity: 0;
+    transform: translate3d(0, -30px, 0);
+  }
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+@keyframes slideInUp {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 30px, 0);
+  }
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+@keyframes slideInRight {
+  from {
+    opacity: 0;
+    transform: translate3d(30px, 0, 0);
+  }
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 20px, 0);
+  }
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+/* ===============================
+   RESPONSIVE DESIGN
+   =============================== */
+
+@media (max-width: 768px) {
+  .hero-title {
+    font-size: 2.5rem;
+  }
+  
+  .hero-features {
+    gap: 20px;
+  }
+  
+  .section-title {
+    font-size: 2rem;
+  }
+  
+  .coffee-card {
+    margin-bottom: 20px;
+  }
+  
+  .order-panel {
+    position: relative;
+    margin-top: 30px;
+  }
+}
+
+/* ===============================
+   UTILITY CLASSES
+   =============================== */
+
+.text-primary-custom {
+  color: var(--primary-color) !important;
+}
+
+.bg-gradient-custom {
+  background: linear-gradient(135deg, var(--accent-color), var(--gold-color)) !important;
+}
+
+.shadow-custom {
+  box-shadow: var(--shadow-medium) !important;
+}
+
+.pulse {
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+/* ===============================
+   FOOTER POSITIONING FIX
+   =============================== */
+.footer {
+  position: relative !important;
+  bottom: auto !important;
+  margin-top: 2rem;
+  padding: 1rem 0;
+  background-color: var(--light-bg);
+  border-top: 1px solid rgba(43, 29, 22, 0.1);
 }

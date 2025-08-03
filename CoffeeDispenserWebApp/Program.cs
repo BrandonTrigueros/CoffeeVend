@@ -1,14 +1,28 @@
-using CoffeeDispenserWebApp.Controllers;
 using CoffeeDispenserWebApp.Repositories;
+using CoffeeDispenserWebApp.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 
+// Configure logging
+builder.Logging.ClearProviders();
+builder.Logging.AddConsole();
+builder.Logging.AddDebug();
+
+// Register repositories
 builder.Services.AddSingleton<ICoffeeRepository, CoffeeRepository>();
 builder.Services.AddSingleton<ICoinRepository, CoinRepository>();
-builder.Services.AddTransient<ChangeCalculator>();
+
+// Register services
+builder.Services.AddScoped<IChangeCalculatorService, ChangeCalculatorService>();
+
+// Add anti-forgery token for security
+builder.Services.AddAntiforgery(options =>
+{
+    options.HeaderName = "X-CSRF-TOKEN";
+});
 
 var app = builder.Build();
 

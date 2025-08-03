@@ -22,28 +22,36 @@ namespace CoffeeDispenserWebApp.Repositories
             return AvailableCoins;
         }
 
-        public void AddCoins(List<CoinModel> model)
+        public void AddCoins(List<CoinModel> coins)
         {
-            foreach (CoinModel coin in model)
+            if (coins == null) return;
+
+            foreach (CoinModel coin in coins)
             {
-                CoinModel existingCoin = AvailableCoins.Find(c => c.Value == coin.Value);
+                CoinModel? existingCoin = AvailableCoins.Find(c => c.Value == coin.Value);
                 if (existingCoin != null)
                 {
                     existingCoin.Amount += coin.Amount;
                 }
                 else
                 {
-                    AvailableCoins.Add(coin);
+                    AvailableCoins.Add(new CoinModel(coin.Value, coin.Amount));
                 }
             }
         }
 
-        public void SubstractCoins(List<CoinModel> model) { 
-            foreach (CoinModel coin in model) {
-                CoinModel existingCoin = AvailableCoins.Find(c => c.Value == coin.Value);
+        public void SubstractCoins(List<CoinModel> coins)
+        {
+            if (coins == null) return;
+
+            foreach (CoinModel coin in coins)
+            {
+                CoinModel? existingCoin = AvailableCoins.Find(c => c.Value == coin.Value);
                 if (existingCoin != null)
                 {
                     existingCoin.Amount -= coin.Amount;
+                    if (existingCoin.Amount < 0)
+                        existingCoin.Amount = 0; // Prevent negative amounts
                 }
             }
         }
